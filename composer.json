@@ -1,6 +1,6 @@
 {
   "name": "cijber/defer",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A minimal Promise reactor based on fibers",
   "license": "MIT",
   "require": {

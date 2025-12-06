@@ -180,11 +180,25 @@ class Promise
                 });
         }
 
+        if ($todo === 0) {
+            $n->resolve($done);
+        }
+
         return $n;
     }
 
+    /***
+     * @template TInput of array<Promise<TValue>|Closure<TValue>|TValue>
+     * @template TKey key-of<TInput>
+     * @param TInput $items
+     * @return Promise<null|list{TKey, TValue}>
+     */
     public static function pick(array $items): Promise
     {
+        if (count($items) === 0) {
+            return Promise::resolved(null);
+        }
+
         $promiseList = [];
         foreach ($items as $key => $item) {
             if ($item instanceof Closure) {

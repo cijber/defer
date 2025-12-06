@@ -297,7 +297,7 @@ class Scheduler
         while ($task->state !== TaskState::Done) {
             $sleep = $this->timeToNext();
             if ($sleep === null) {
-                throw new RuntimeException(":(");
+                throw new RuntimeException("Task didn't complete with nothing else todo in the queue");
             } else if ($sleep >= $zero) {
                 $this->next();
             } else {

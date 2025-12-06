@@ -4,19 +4,34 @@ use Cijber\Defer\Promise;
 use function Cijber\Defer\defer;
 use function Cijber\Defer\rest;
 
-test('promise all', function () {
-    $p = Promise::all([
-        '1' => fn() => 1,
-        '2' => fn() => rest(0, 300_000),
-        '3' => 3,
-    ]);
+describe('Promise:all', function () {
+    test('race', function () {
+        $p = Promise::all([
+            '1' => fn() => 1,
+            '2' => fn() => rest(0, 300_000),
+            '3' => 3,
+        ]);
 
 
-    expect($p->await())->toMatchArray([
-        '1' => 1,
-        '2' => null,
-        '3' => 3,
-    ]);
+        expect($p->await())->toMatchArray([
+            '1' => 1,
+            '2' => null,
+            '3' => 3,
+        ]);
+    });
+
+    test('instant', function () {
+        $p = Promise::all([
+            1 => 1,
+        ]);
+
+        expect($p->await())->toMatchArray([1 => 1]);
+    });
+
+    test('empty', function () {
+        $p = Promise::all([]);
+        expect($p->await())->toBeArray()->toBeEmpty();
+    });
 });
 
 test('promise resolved', function () {
@@ -24,8 +39,8 @@ test('promise resolved', function () {
     expect($p->await())->toBe(2);
 });
 
-describe('promise pick', function () {
-    it('instantly resolved', function () {
+describe('Promise::pick', function () {
+    it('instantly', function () {
         $p = Promise::pick([
             '1' => 1,
         ]);
@@ -33,7 +48,12 @@ describe('promise pick', function () {
         expect($p->await())->toMatchArray(['1', 1]);
     });
 
-    it('picks right', function () {
+    it('empty', function () {
+        $p = Promise::pick([]);
+        expect($p->await())->toBeNull();
+    });
+
+    it('picks', function () {
         $p = Promise::pick([
             '1' => function () {
                 rest(1);

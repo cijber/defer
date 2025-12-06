@@ -1,0 +1,22 @@
+{
+  "name": "cijber/defer",
+  "version": "1.0.0",
+  "description": "A minimal Promise reactor based on fibers",
+  "require": {
+    "php": ">=8.1"
+  },
+  "require-dev": {
+    "pestphp/pest": "^4.1"
+  },
+  "config": {
+    "allow-plugins": {
+      "pestphp/pest-plugin": true
+    }
+  },
+  "autoload": {
+    "psr-4": {
+      "Cijber\\Defer\\": "src/"
+    },
+    "files": ["src/functions.php"]
+  }
+}
